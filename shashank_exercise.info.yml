@@ -1,0 +1,5 @@
+name: 'Shashank Exercise'  #name of the module
+description: 'New exercise' #add description of the module
+type: module    #specifies the type like module,etc
+core_version_requirement: ^9 || ^10  #specifies the  minimum required version of the drupal for module
+version: 9.x-1.0  #version of the module

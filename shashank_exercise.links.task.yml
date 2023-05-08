@@ -1,0 +1,18 @@
+shashank_exercise.custom: # The first plugin ID
+  route_name: shashank_exercise.custom_form #custom form route name directs to custom form
+  title: CustomForm   #title of Custom tab
+  base_route: shashank_exercise.controller  #controller route name appeares on control page
+  weight: 1    #this to be displayed first
+
+shashank_exercise.config:
+  route_name: shashank_exercise.config_form  #config form route name directs to config form
+  title : Configform   #title of Config tab
+  base_route: shashank_exercise.controller  #controller route name appeares on control page
+  weight: 2  #this to be displayed second
+
+
+shashank_exercise.controller_demo:
+  route_name: shashank_exercise.controller   #controller route name directs to control form
+  title : Controller    #title of Controller tab
+  base_route: shashank_exercise.controller  #controller route name appeares on control page
+  weight: 3  #this has to be displayed third

@@ -1,0 +1,3 @@
+config form permission:
+  title: Permission    #permission's title
+  description: Permission desc   #description for permission

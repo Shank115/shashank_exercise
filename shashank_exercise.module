@@ -1,0 +1,28 @@
+<?php
+use Drupal\Core\Form\FormStateInterface;
+/**
+ * implements hook_form_alter
+ */
+
+ function shashank_exercise_form_alter(&$form,FormStateInterface $form_state, $form_id) {   #gets called whene form is opened
+
+    $data = \Drupal::service('custom_service')->getName();   #calling service to call getName func from CustomService.php
+    print_r($data);  #prints the value provided in the config form
+
+  }
+ /**
+ * Implements hook_theme().
+ */
+
+function shashank_exercise_theme($existing, $type, $theme, $path) { #create a theme in the controller
+
+    return [
+       'shashank_template' => [  #name of template
+           'variables' => [
+                'markup' => "",    #provide default value for markup
+                'hexcode'=> "",    #provide default value for hexcode
+            ],
+       ],
+   ];
+
+ }

@@ -1,0 +1,5 @@
+example.admin:
+  title: 'Control'  #title of menu
+  description: 'Controller menu' #description of menu
+  route_name: 'shashank_exercise.controller'  #route name of the menu which is to be placed
+  parent: system.admin  #route name of where it is present

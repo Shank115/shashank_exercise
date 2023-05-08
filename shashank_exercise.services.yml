@@ -1,0 +1,4 @@
+services:           #create service
+  custom_service:
+    class : Drupal\shashank_exercise\CustomService
+    arguments: ['@config.factory']

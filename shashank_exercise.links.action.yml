@@ -1,0 +1,5 @@
+add_content.config:
+  route_name: "shashank_exercise.config_form"   #route name of menu which must be placed
+  title: "Configform"  #title in action button
+  appears_on:
+    - "shashank_exercise.custom_form" #route name of where the menu should appear

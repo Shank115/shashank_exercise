@@ -1,0 +1,46 @@
+<?php
+// update => module reinstallation not required.
+/**
+ * implements hook_schema().
+ */
+
+ # used to store the data in the database
+
+function shashank_exercise_general_schema() {  #create table in databse
+    $schema['user_details'] = [      #name of schema
+        'description' => 'Stores user details',  #description for table
+        'fields' => [
+            'id' => [
+                'description' => 'serial number',
+                'type' => 'serial',
+                'not null' => true
+            ],
+            'username' => [             #same field of custom form
+                'description' => 'Firstname of the user',  #description for the field
+                'type' => 'varchar',    #type of field
+                'length' => 60,         #maximum string length
+                'not null' => true,     #if it is null or not
+            ],
+            'name' => [
+                'description' => 'Last Name of the user',   #same field of custom form
+                'type' => 'varchar',
+                'length' => 60,
+                'not null' => true,
+            ],
+            'email' => [
+                'description' => 'Email of the user',   #same field of custom form
+                'type' => 'varchar',
+                'length' => 60,
+                'not null' => true,
+            ],
+            'age' => [
+                'description' => 'age of the user',   #same field of custom form
+                'type' => 'varchar',
+                'length' => 60,
+                'not null' => true,
+            ],
+        ],
+        'primary key' => ['id'],
+    ];
+    return $schema;
+}

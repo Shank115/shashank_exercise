@@ -1,0 +1,27 @@
+shashank_exercise.controller: #machine name
+  path: '/controller'    #path of controller page
+  defaults:
+    _controller: '\Drupal\shashank_exercise\Controller\Controller::exe'   #path and function name is defined
+    _title: 'New Exercise'   #title to be displayed in controller page
+  requirements:
+    _permission: 'controller permission'   #permission of controller page
+
+
+shashank_exercise.custom_form:   #machine name
+  path: '/custom-form-exe'    #path of custom form page
+  defaults:
+    _form: '\Drupal\shashank_exercise\Form\CustomForm'            #path is defined
+    _title: 'User Details '  #title to be displayed in custom form page
+  requirements:
+    _permission: 'access content'  #permission of custom form page
+
+
+shashank_exercise.config_form:   #machine name
+  path: '/config-form-exe'   #path of config form page
+  defaults:
+    _form: '\Drupal\shashank_exercise\Form\ConfigForm'     #path is defined
+    _title: 'User details'   #title to be displayed in config form page
+  requirements:
+    _permission: 'config form permission'    #permission of config form page
+  options:
+    _admin_route: TRUE
