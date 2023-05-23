@@ -2,3 +2,9 @@ services:           #create service
   custom_service:
     class : Drupal\shashank_exercise\CustomService
     arguments: ['@config.factory']
+
+  custom_events_subscriber:
+    class: 'Drupal\shashank_exercise\EventSubscriber\CustomConfigEvent'
+    tags:
+      - { name: 'event_subscriber' }
+
