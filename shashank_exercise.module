@@ -7,7 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
  function shashank_exercise_form_alter(&$form,FormStateInterface $form_state, $form_id) {   #gets called whene form is opened
 
     $data = \Drupal::service('custom_service')->getName();   #calling service to call getName func from CustomService.php
-    print_r($data);  #prints the value provided in the config form
+    //print_r($data);  #prints the value provided in the config form
 
   }
  /**
