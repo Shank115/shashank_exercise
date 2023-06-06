@@ -1,0 +1,11 @@
+services:
+  custom_drush.commands:
+    class: \Drupal\custom_drush\Commands\DrushHelpersCommands
+    arguments: ['@entity_type.manager']  #load users or nodes
+    tags:
+      - { name: drush.command }
+  custom_drush.node:
+    class: \Drupal\custom_drush\Commands\DrushNodeTask
+    arguments: ['@entity_type.manager']  #load users or nodes
+    tags:
+      - { name: drush.command }

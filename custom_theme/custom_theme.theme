@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+
+ function custom_theme_theme_suggestions_node_alter(array &$suggestions, array $variables) {
+   //print_r($suggestions);exit;
+   if(\Drupal::currentUser()->isAnonymous()) {
+      $suggestions[] = "node__anonymous";
+   }
+ }
