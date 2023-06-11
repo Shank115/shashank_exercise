@@ -1,19 +1,30 @@
 <?php
 
-namespace Drupal\shashank_exercise\Controller; #defines namespace for controller
+namespace Drupal\shashank_exercise\Controller;
 
-use Drupal\Core\Controller\ControllerBase; #class file importing
-use Drupal\shashank_exercise\CustomService;
+// Class file importing.
+use Drupal\Core\Controller\ControllerBase;
 
-class Controller extends ControllerBase {  #controller class extension
+/**
+ * Define class.
+ */
+class Controller extends ControllerBase {
 
-public function exe() { #defining function
-    $data = \Drupal::service('custom_service')->getName(); #calling the service
-    return[
-        '#theme'=> "shashank_template", #template use
-        '#markup' => $data,    # returning data from service
-        '#hexcode'=> '#FF0000', #color for the text
+  /**
+   * Controller class extension.
+   */
+  public function exe() {
+    // Defining function.
+    // Calling the service.
+    $data = \Drupal::service('custom_service')->getName();
+    return [
+    // Template use.
+      '#theme' => "shashank_template",
+    // Returning data from service.
+      '#markup' => $data,
+    // Color for the text.
+      '#hexcode' => '#FF0000',
     ];
-}
+  }
 
 }

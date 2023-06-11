@@ -7,4 +7,3 @@ services:           #create service
     class: 'Drupal\shashank_exercise\EventSubscriber\CustomConfigEvent'
     tags:
       - { name: 'event_subscriber' }
-

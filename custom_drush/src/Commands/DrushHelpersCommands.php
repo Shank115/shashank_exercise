@@ -6,13 +6,14 @@ use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Drush\Commands\DrushCommands;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 
+/**
+ * Define class.
+ */
 class DrushHelpersCommands extends DrushCommands {
 
   /**
-   * @var Drupal\Core\Entity\EntityTypeManagerInterface $entityManager
-   *    Entity manager service.
+   * Entity manager service.
    */
-
   public function __construct(EntityTypeManagerInterface $entityTypeManager) {
     $this->entityManager = $entityTypeManager;
     parent::__construct();
@@ -32,8 +33,6 @@ class DrushHelpersCommands extends DrushCommands {
    *
    * @command drush-helpers:blocked-users
    * @aliases blocked-users
-   *
-   * @return \Consolidation\OutputFormatters\StructuredData\RowsOfFields
    */
   public function blockedUsers() {
     $users = $this->entityManager->getStorage('user')->loadByProperties(['status' => 1]);

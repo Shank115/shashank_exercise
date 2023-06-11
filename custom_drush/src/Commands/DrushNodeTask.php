@@ -6,17 +6,20 @@ use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Drush\Commands\DrushCommands;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 
+/**
+ * Define class.
+ */
 class DrushNodeTask extends DrushCommands {
-  /**
-   * @var Drupal\Core\Entity\EntityTypeManagerInterface $entityManager
-   *    Entity manager service.
-   */
 
+  /**
+   * Entity manager service.
+   */
   public function __construct(EntityTypeManagerInterface $entityTypeManager) {
     $this->entityManager = $entityTypeManager;
     parent::__construct();
   }
-/**
+
+  /**
    * Command that returns a list of all blocked users.
    *
    * @field-labels
@@ -29,18 +32,17 @@ class DrushNodeTask extends DrushCommands {
    *
    * @command drush-helpers:return-title
    * @aliases return-title
-   *
-   * @return \Consolidation\OutputFormatters\StructuredData\RowsOfFields
    */
   public function drushNode() {
     $nodes = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['type' => 'page']);
     $rows = [];
-    foreach($nodes as $node) {
-        $rows[] = [
-          'id' => $node->id(),
-          'title' => $node->getTitle(),
-        ];
-      }
-        return new RowsOfFields($rows);
+    foreach ($nodes as $node) {
+      $rows[] = [
+        'id' => $node->id(),
+        'title' => $node->getTitle(),
+      ];
     }
+    return new RowsOfFields($rows);
   }
+
+}

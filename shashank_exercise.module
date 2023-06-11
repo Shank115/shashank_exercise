@@ -1,61 +1,39 @@
 <?php
-use Drupal\Core\Form\FormStateInterface;
+
 /**
- * implements hook_form_alter
+ * @file
+ * This is a short desc.
  */
 
-function shashank_exercise_form_alter(&$form,FormStateInterface $form_state, $form_id) {   #gets called whene form is opened
+use Drupal\Core\Form\FormStateInterface;
 
-    $data = \Drupal::service('custom_service')->getName();   #calling service to call getName func from CustomService.php
-    //print_r($data);  #prints the value provided in the config form
+/**
+ * Implements hook_form_alter().
+ */
+function shashank_exercise_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Gets called whenever form is opened.
+  // Calling service to call getName func from CustomService.php.
+  $data = \Drupal::service('custom_service')->getName();
+  // Prints the value provided in the config form.
+  print_r($data);
+}
 
-  }
 /**
  * Implements hook_theme().
  */
+function shashank_exercise_theme($existing, $type, $theme, $path) {
 
-function shashank_exercise_theme($existing, $type, $theme, $path) { #create a theme in the controller
-
-    return [
-      'shashank_template' => [  #name of template
-          'variables' => [
-                'markup' => "",    #provide default value for markup
-                'hexcode'=> "",    #provide default value for hexcode
-            ],
+  return [
+  // Name for the template file (html.twig)
+    'shashank_template' => [
+  // Defined variables to be returned.
+      'variables' => [
+  // Can provide default value for markup here.
+        'markup' => "",
+  // Can prove default value for hexcode here.
+        'hexcode' => "",
       ],
-    ];
+    ],
+  ];
 
 }
-/**
- * @file
- * Contains shashank_exercise.module.
- */
-
-use Drupal\shashank_exercise\Event\UserLoginEvent;
-
-
-function shashank_exercise_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-
-     // $route = \Drupal::routeMatch()->getRouteName();
-     // print_r($route);
-      //exit;
-      $data=\Drupal::service('custom_service')->getName();
-     // print_r($data);
-      //exit;
-
-
-
-}
-
-/**
- * Implements hook_user_login().
- */
-function shashank_exercise_user_login($account) {
-    // Instantiate our event.
-    $event = new UserLoginEvent($account);
-
-    // Get the event_dispatcher service and dispatch the event.
-    $event_dispatcher = \Drupal::service('event_dispatcher');
-    $event_dispatcher->dispatch($event, UserLoginEvent::EVENT_NAME);
-  }
-

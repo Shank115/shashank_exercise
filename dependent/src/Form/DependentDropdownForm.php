@@ -4,9 +4,10 @@ namespace Drupal\dependent\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
 
-
+/**
+ * Define a class.
+ */
 class DependentDropdownForm extends FormBase {
 
   /**
@@ -20,44 +21,69 @@ class DependentDropdownForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $opt = $this->location(); #location stored in opt variable
-    $cat = $form_state->getValue('category') ?: 'none';  #using getvalue to get the value of category and store it in cat
-    $avai = $form_state->getValue('availableitems') ?: 'none'; #using getvalue to get the value of available items
+    // Location stored in opt variable.
+    $opt = $this->location();
+    // Using getvalue to get the value of category and store it in cat.
+    $cat = $form_state->getValue('category') ?: 'none';
+    // Using getvalue to get the value of available items.
+    $avai = $form_state->getValue('availableitems') ?: 'none';
     $form['category'] = [
-        '#type' => 'select', #type is select
-        '#title' => 'country',  #providing the title
-        '#options' => $opt,   #options stored in opt variable
-        'default_value' => $cat,  #default value
-        '#ajax' => [
-            'callback' => '::DropdownCallback',  #event
-            'wrapper' => 'field-container',   #this element will get altered
-            'event' => 'change'   #event is change
-        ]
+    // Type is select.
+      '#type' => 'select',
+    // Providing the title.
+      '#title' => 'country',
+    // Options stored in opt variable.
+      '#options' => $opt,
+    // Default value.
+      'default_value' => $cat,
+      '#ajax' => [
+    // Event.
+        'callback' => '::DropdownCallback',
+    // This element will get altered.
+        'wrapper' => 'field-container',
+    // Event is change.
+        'event' => 'change',
+      ],
     ];
     $form['availableitems'] = [
-        '#type' => 'select',   #type is select
-        '#title' => 'state',  #providing the title
-        '#options' =>static::availableItems($cat), #options stored in cat variable
-        '#default_value' => !empty($form_state->getValue('availableitems')) ? $form_state->getValue('availableitems') : 'none',   #f the form is empty get value from the available items
-        '#prefix' => '<div id="field-container"',  #providing a prefix
-        '#suffix' => '</div>',  #providing suffix
-        '#ajax' => [
-          'callback' => '::DropdownCallback',   #this is event
-          'wrapper' => 'dist-container',   #defining which element will get altered
-          'event' => 'change'    #event is change
-      ]
+    // Type is select.
+      '#type' => 'select',
+    // Providing the title.
+      '#title' => 'state',
+    // Options stored in cat variable.
+      '#options' => static::availableItems($cat),
+    // F the form is empty get value from the available items.
+      '#default_value' => !empty($form_state->getValue('availableitems')) ? $form_state->getValue('availableitems') : 'none',
+    // Providing a prefix.
+      '#prefix' => '<div id="field-container"',
+    // Providing suffix.
+      '#suffix' => '</div>',
+      '#ajax' => [
+    // This is event.
+        'callback' => '::DropdownCallback',
+    // Defining which element will get altered.
+        'wrapper' => 'dist-container',
+    // Event is change.
+        'event' => 'change',
+      ],
     ];
     $form['district'] = [
-          '#type' => 'select',   #type is select
-          '#title' => 'district', #providing the title
-          '#options' =>static::district($avai), #options stored in avai variable
-          '#default_value' => !empty($form_state->getValue('district')) ? $form_state->getValue('district') : '',   #f the form is empty get value from the available items
-          '#prefix' => '<div id="dist-container"',   #providing a prefix
-          '#suffix' => '</div>',   #providing suffix
+    // Type is select.
+      '#type' => 'select',
+    // Providing the title.
+      '#title' => 'district',
+    // Options stored in avai variable.
+      '#options' => static::district($avai),
+    // F the form is empty get value from the available items.
+      '#default_value' => !empty($form_state->getValue('district')) ? $form_state->getValue('district') : '',
+    // Providing a prefix.
+      '#prefix' => '<div id="dist-container"',
+    // Providing suffix.
+      '#suffix' => '</div>',
     ];
     $form['submit'] = [
-        '#type' => 'submit',
-        '#value' => 'Submit',
+      '#type' => 'submit',
+      '#value' => 'Submit',
     ];
     return $form;
   }
@@ -66,67 +92,86 @@ class DependentDropdownForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $trigger = (string) $form_state->getTriggeringElement()['#value'];  #submit form this string is triggered and element stored on trigger
-    if ($trigger != 'submit') {   #if it is not equal to submit
-        $form_state->setRebuild();  #rebuild the form state
+    // Submit form this string is triggered and element stored on trigger.
+    $trigger = (string) $form_state->getTriggeringElement()['#value'];
+    // If it is not equal to submit.
+    if ($trigger != 'submit') {
+      // Rebuild the form state.
+      $form_state->setRebuild();
     }
   }
 
-  public function DropdownCallback(array &$form, FormStateInterface $form_state) {
+  /**
+   * Function dropdowncallback.
+   */
+  public function dropdownCallback(array &$form, FormStateInterface $form_state) {
     $triggering_element = $form_state->getTriggeringElement();
     $triggering_element_name = $triggering_element['#name'];
 
-    if ($triggering_element_name === 'category') {  #if element name is equal to category
-      return $form['availableitems'];  #return the values of available items
+    // If element name is equal to category.
+    if ($triggering_element_name === 'category') {
+      // Return the values of available items.
+      return $form['availableitems'];
     }
-    elseif ($triggering_element_name === 'availableitems') {  #if element name is equal to available items
-      return $form['district'];   #return the district values
+    // If element name is equal to available items.
+    elseif ($triggering_element_name === 'availableitems') {
+      // Return the district values.
+      return $form['district'];
     }
-
 
   }
 
-  public function location() {   #setting the location values
+  /**
+   * Function is called.
+   */
+  public function location() {
+    // Setting the location values.
     return [
-        'none' => '-none-',
-        'india' => 'india',
+      'none' => '-none-',
+      'india' => 'india',
     ];
   }
 
+  /**
+   * Function is called.
+   */
   public function availableItems($cat) {
     switch ($cat) {
-        case 'india':
-            $opt = [
-                'karnataka' => 'karnataka',
-                'TN' => 'TN',
-            ];
+      case 'india':
+        $opt = [
+          'karnataka' => 'karnataka',
+          'TN' => 'TN',
+        ];
         break;
-        default:
-          $opt = ['none' => '-none-'];
+
+      default:
+        $opt = ['none' => '-none-'];
         break;
     }
     return $opt;
   }
 
+  /**
+   * Function is called.
+   */
   public function district($avai) {
-    switch($avai) {
+    switch ($avai) {
       case 'karnataka':
         $opt = [
           'mysore' => 'mysore',
           'bangalore' => 'bangalore',
           'mangalore' => 'mangalore',
         ];
-      break;
+        break;
+
       case 'TN':
         $opt = [
           'chennai' => 'chennai',
           'madurai' => 'madurai',
         ];
-      break;
+        break;
     }
     return $opt;
   }
-
-
 
 }

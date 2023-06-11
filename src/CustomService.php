@@ -5,7 +5,7 @@ namespace Drupal\shashank_exercise;
 use Drupal\Core\Config\ConfigFactory;
 
 /**
- * Class CustomService.
+ * ASd.
  *
  * @package Drupal\shashank_exercise\Services
  */
@@ -28,9 +28,11 @@ class CustomService {
   /**
    * Gets my setting.
    */
-  public function getName() {     #takes value of name and returns it
+  public function getName() {
+    // Takes value of name and returns it.
     $config = $this->configFactory->get('shashank_exercise.settings');
-    return $config->get('name');  #return the value
+    // Return the value.
+    return $config->get('name');
   }
 
 }

@@ -1,46 +1,111 @@
 <?php
-// update => module reinstallation not required.
+
 /**
- * implements hook_schema().
+ * @file
+ * Update => module reinstallation not required.
  */
 
- # used to store the data in the database
+/**
+ * Implements hook_schema().
+ */
+use Drupal\node\Entity\Node;
 
-function shashank_exercise_general_schema() {  #create table in databse
-    $schema['user_details'] = [      #name of schema
-        'description' => 'Stores user details',  #description for table
-        'fields' => [
-            'id' => [
-                'description' => 'serial number',
-                'type' => 'serial',
-                'not null' => true
-            ],
-            'username' => [             #same field of custom form
-                'description' => 'Firstname of the user',  #description for the field
-                'type' => 'varchar',    #type of field
-                'length' => 60,         #maximum string length
-                'not null' => true,     #if it is null or not
-            ],
-            'name' => [
-                'description' => 'Last Name of the user',   #same field of custom form
-                'type' => 'varchar',
-                'length' => 60,
-                'not null' => true,
-            ],
-            'email' => [
-                'description' => 'Email of the user',   #same field of custom form
-                'type' => 'varchar',
-                'length' => 60,
-                'not null' => true,
-            ],
-            'age' => [
-                'description' => 'age of the user',   #same field of custom form
-                'type' => 'varchar',
-                'length' => 60,
-                'not null' => true,
-            ],
-        ],
-        'primary key' => ['id'],
-    ];
-    return $schema;
+/**
+ * Used to store the data in the database.
+ */
+function shashank_exercise_general_schema() {
+  // Create table in databse.
+  // Name of schema.
+  $schema['user_details'] = [
+  // Description for table.
+    'description' => 'Stores user details',
+    'fields' => [
+      'id' => [
+        'description' => 'serial number',
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      // Same field of custom form.
+      'username' => [
+      // Description for the field.
+        'description' => 'Firstname of the user',
+      // Type of field.
+        'type' => 'varchar',
+      // Maximum string length.
+        'length' => 60,
+      // If it is null or not.
+        'not null' => TRUE,
+      ],
+      'name' => [
+      // Same field of custom form.
+        'description' => 'Last Name of the user',
+        'type' => 'varchar',
+        'length' => 60,
+        'not null' => TRUE,
+      ],
+      'email' => [
+      // Same field of custom form.
+        'description' => 'Email of the user',
+        'type' => 'varchar',
+        'length' => 60,
+        'not null' => TRUE,
+      ],
+      'age' => [
+      // Same field of custom form.
+        'description' => 'age of the user',
+        'type' => 'varchar',
+        'length' => 60,
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+  return $schema;
+}
+
+/**
+ * Function.
+ */
+function shashank_exercise_update_100901() {
+  $config = \Drupal::configFactory()->getEditable('shashank_exercise.settings');
+  $config->set('name', 'SHASHANK');
+  $config->save();
+}
+
+/**
+ * Function.
+ */
+function shashank_exercise_update_100902() {
+  $config = \Drupal::configFactory()->getEditable('shashank_exercise.settings');
+  $config->set('email', 'shank@123.com');
+  $config->save();
+}
+
+/**
+ * Function.
+ */
+function shashank_exercise_update_100903() {
+  $config = \Drupal::configFactory()->getEditable('shashank_exercise.settings');
+  $config->set('email', 'shank@123234554.com');
+  $config->save();
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function shashank_exercise_update_100905() {
+  // Load all article nodes.
+  $query = \Drupal::entityQuery('node')
+    ->accessCheck(TRUE)
+    ->condition('type', 'article');
+  $nids = $query->execute();
+
+  $nodes = Node::loadMultiple($nids);
+
+  foreach ($nodes as $node) {
+    $node->set("field_yo", strtoupper("hey"));
+    $node->save();
+  }
+  \Drupal::messenger()->addMessage('Nodes updated');
+
 }

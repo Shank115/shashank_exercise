@@ -19,77 +19,87 @@ use Drupal\Core\TypedData\DataDefinition;
  *   default_formatter = "custom_field_formatter",
  * )
  */
-
 class CustomFieldType extends FieldItemBase {
 
-    /**
-     * {@inheritdoc}
-     */
+  /**
+   * {@inheritdoc}
+   */
+  public static function schema(FieldStorageDefinitionInterface $field_definition) {
+    // This creates a table.
+    return [
+      'columns' => [
+        'value' => [
+          'type' => 'varchar',
+          'length' => $field_definition->getSetting("length"),
+        ],
+      ],
+    ];
+  }
 
-    public static function schema(FieldStorageDefinitionInterface $field_definition) { //this creates a table
-        return [
-            'columns' => [
-                'value' => [
-                    'type' => 'varchar',
-                    'length' => $field_definition->getSetting("length"),
-                ],
-            ],
-        ];
-    }
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultStorageSettings() {
+    // This is default settings for field.
+    return [
+    // Length should be 255 or less than that.
+      'length' => 255,
+    ] + parent::defaultStorageSettings();
+  }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function defaultStorageSettings() { //this is default settings for field
-        return [
-            'length' => 255, //length should be 255 or less than that
-        ] + parent::defaultStorageSettings();
-    }
+  /**
+   * {@inheritdoc}
+   */
+  public function storageSettingsForm(array &$form, FormStateInterface $form_state, $has_data) {
+    $element = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function storageSettingsForm(array &$form, FormStateInterface $form_state, $has_data) {
-        $element = [];
+    $element['length'] = [
+    // Type of length field.
+      '#type' => 'number',
+    // Title.
+      '#title' => t("Length of your text"),
+      '#required' => TRUE,
+    // Default value.
+      '#default_value' => $this->getSetting("length"),
+    ];
+    return $element;
+  }
 
-        $element['length'] = [
-            '#type' => 'number', //type of length field
-            '#title' => t("Length of your text"), //title
-            '#required' => TRUE,
-            '#default_value' => $this->getSetting("length"), //default value
-        ];
-        return $element;
-    }
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultFieldSettings() {
+    // This is default.
+    return [
+      'moreinfo' => "More info default value",
+    ] + parent::defaultFieldSettings();
+  }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function defaultFieldSettings() { //this is default
-        return [
-            'moreinfo' => "More info default value",
-        ] + parent::defaultFieldSettings();
-    }
+  /**
+   * {@inheritdoc}
+   */
+  public function fieldSettingsForm(array $form, FormStateInterface $form_state) {
+    $element = [];
+    $element['moreinfo'] = [
+    // Type of field.
+      '#type' => 'textfield',
+    // Title of field.
+      '#title' => 'More information about this field',
+    // Is it required field.
+      '#required' => TRUE,
+    // Default value.
+      '#default_value' => $this->getSetting("moreinfo"),
+    ];
+    return $element;
+  }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function fieldSettingsForm(array $form, FormStateInterface $form_state) {
-        $element = [];
-        $element['moreinfo'] = [
-            '#type' => 'textfield', //type of field
-            '#title' => 'More information about this field', //title of field
-            '#required' => TRUE, //is it required field
-            '#default_value' => $this->getSetting("moreinfo"), //default value
-        ];
-        return $element;
-    }
+  /**
+   * {@inheritdoc}
+   */
+  public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
+    $properties['value'] = DataDefinition::create('string')->setLabel(t("Name"));
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function PropertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
-        $properties['value'] = DataDefinition::create('string')->setLabel(t("Name"));
+    return $properties;
+  }
 
-        return $properties;
-    }
 }
