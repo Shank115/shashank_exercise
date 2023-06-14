@@ -13,7 +13,7 @@ use Drupal\node\Entity\Node;
 /**
  * Used to store the data in the database.
  */
-function shashank_exercise_general_schema() {
+function shashank_exercise_schema() {
   // Create table in databse.
   // Name of schema.
   $schema['user_details'] = [
