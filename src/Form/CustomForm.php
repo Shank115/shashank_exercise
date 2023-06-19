@@ -4,35 +4,56 @@ namespace Drupal\shashank_exercise\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Database\Connection;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Define Class.
+ * For custom form.
  */
 class CustomForm extends FormBase {
-  // Implements interface.
 
   /**
-   * Generated form id.
+   * The database connection.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $database;
+
+  /**
+   * CustomForm constructor.
+   *
+   * @param \Drupal\Core\Database\Connection $database
+   *   The database connection.
+   */
+  public function __construct(Connection $database) {
+    $this->database = $database;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('database')
+    );
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function getFormId() {
-    // To get form id.
-    // Form id.
     return 'custom_form_get_user_details';
   }
 
   /**
-   * Build form generates form.
+   * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    // Build form by adding fields.
+    // Building form by adding the required fields.
     $form['firstname'] = [
-    // Type of field.
       '#type' => 'textfield',
-    // Title for field.
       '#title' => 'First Name',
-    // Required field or not.
       '#required' => TRUE,
-    // Placeholder for field.
       '#placeholder' => 'First Name',
     ];
     $form['lastname'] = [
@@ -60,7 +81,7 @@ class CustomForm extends FormBase {
       '#type' => 'submit',
       '#value' => 'Submit',
     ];
-    // Displays form along with its fields.
+
     return $form;
   }
 

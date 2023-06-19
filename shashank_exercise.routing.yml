@@ -1,7 +1,7 @@
 shashank_exercise.controller: #machine name
   path: '/controller'    #path of controller page
   defaults:
-    _controller: '\Drupal\shashank_exercise\Controller\Controller::exe'   #path and function name is defined
+    _controller: '\Drupal\shashank_exercise\Controller\Controllers::exe'   #path and function name is defined
     _title: 'New Exercise'   #title to be displayed in controller page
   requirements:
     _permission: 'controller permission'   #permission of controller page
@@ -25,3 +25,35 @@ shashank_exercise.config_form:   #machine name
     _permission: 'config form permission'    #permission of config form page
   options:
     _admin_route: TRUE
+
+dependent.form:
+  path: '/dropdown'
+  defaults:
+    _form: '\Drupal\dependent\Form\DependentDropdownForm'
+    _title: 'Dependent Dropdown'
+  requirements:
+    _permission: 'access content'
+
+
+shashank_exercise.dropdowndemo: #route name for dropdown
+  path: '/dropdown-form' #this the url for dropdown
+  defaults:
+    _form: '\Drupal\shashank_exercise\Form\DropdownForm' # path where the file is present
+    _title: 'ajax practice demo' #title for dropdown
+  requirements:
+    _permission: 'access content' #accessible for all the users
+
+
+
+shashank_exercise.title:
+  path: '/node/{node}/title'
+  defaults:
+    _controller: '\Drupal\shashank_exercise\Controller\ControlNew::nodTitle'
+    _title_callback: '\Drupal\shashank_exercise\Controller\ControlNew::nodTitlePageTitle'
+  requirements:
+    _custom_access: '\Drupal\shashank_exercise\Controller\ControlNew::accessNode'
+  options:
+    _admin_route: TRUE
+    parameters:
+      node:
+        type: entity:node

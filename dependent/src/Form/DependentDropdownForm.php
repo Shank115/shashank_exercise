@@ -1,28 +1,36 @@
 <?php
 
+namespace Drupal\dependent\Form;
+
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Database\Database;
 
 /**
- * Implements the example form.
+ * Class for dropdown form.
  */
-class MyModuleExampleForm extends FormBase {
+class DependentDropdownForm extends FormBase {
 
   /**
-   * {@inheritdoc}
+   * This is a comment. {@inheritdoc}.
    */
   public function getFormId() {
-    return 'my_module_example_form';
+    return 'country_form';
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $selected_country_id = $form_state->getValue("country");
+    $selected_state_id = $form_state->getValue("state");
+    // Create country form.
     $form['country'] = [
+    // Type select.
       '#type' => 'select',
+    // Title.
       '#title' => $this->t('Country'),
+    // Returns state list.
       '#options' => $this->getCountryOptions(),
       '#empty_option' => $this->t('- Select -'),
       '#ajax' => [
@@ -39,10 +47,10 @@ class MyModuleExampleForm extends FormBase {
     $form['state'] = [
       '#type' => 'select',
       '#title' => $this->t('State'),
+      '#options' => $this->getstateOptions($selected_country_id),
+      '#empty_option' => $this->t('- Select -'),
       '#prefix' => '<div id="state-dropdown-wrapper">',
       '#suffix' => '</div>',
-      '#empty_option' => $this->t('- Select -'),
-      '#disabled' => TRUE,
       '#ajax' => [
         'callback' => [$this, 'ajaxDistrictDropdownCallback'],
         'wrapper' => 'district-dropdown-wrapper',
@@ -57,10 +65,10 @@ class MyModuleExampleForm extends FormBase {
     $form['district'] = [
       '#type' => 'select',
       '#title' => $this->t('District'),
+      '#options' => $this->getDistrictsByState($selected_state_id),
       '#prefix' => '<div id="district-dropdown-wrapper">',
       '#suffix' => '</div>',
       '#empty_option' => $this->t('- Select -'),
-      '#disabled' => TRUE,
     ];
 
     return $form;
@@ -103,6 +111,40 @@ class MyModuleExampleForm extends FormBase {
     return $options;
   }
 
-  // Add helper functions to retrieve state and district options based on the selected country.
+  /**
+   * Function is called.
+   */
+  private function getstateOptions($selected_country_id) {
+
+    // Fetch the states for the selected country.
+    $query = Database::getConnection()->select('state', 's');
+    $query->fields('s', ['id', 'name']);
+    $query->condition('s.country_id', $selected_country_id);
+    $result = $query->execute();
+
+    // Iterate over the result to retrieve the state information.
+    $states = [];
+    foreach ($result as $row) {
+      $states[$row->id] = $row->name;
+    }
+    return $states;
+  }
+
+  /**
+   * Function is called.
+   */
+  public function getDistrictsByState($selected_state_id) {
+    $query = Database::getConnection()->select('district', 'd');
+    $query->fields('d', ['id', 'name']);
+    $query->condition('d.state_id', $selected_state_id);
+    $result = $query->execute();
+
+    $districts = [];
+    foreach ($result as $row) {
+      $districts[$row->id] = $row->name;
+    }
+
+    return $districts;
+  }
 
 }

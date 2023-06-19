@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Update => module reinstallation not required.
+ */
+
 use Drupal\Core\Database\Database;
 
 /**
@@ -7,7 +12,7 @@ use Drupal\Core\Database\Database;
  *
  * Create the tables for country, state, and district.
  */
-function dependent_update_100909() {
+function dependent_update_100912() {
   $schema = Database::getConnection()->schema();
   $connection = Database::getConnection();
 
@@ -31,7 +36,7 @@ function dependent_update_100909() {
     ];
     $schema->createTable('country', $table);
   }
-     // Create state table.
+  // Create state table.
   if (!$schema->tableExists('state')) {
     $table = [
       'description' => 'State table',
@@ -101,20 +106,20 @@ function dependent_update_100909() {
     ->execute();
   $connection->insert('state')
     ->fields(['country_id', 'name'])
-    ->values([1, 'State 1'])
-    ->values([1, 'State 2'])
-    ->values([2, 'State 3'])
-    ->values([2, 'State 4'])
+    ->values([1, 'Tn'])
+    ->values([1, 'Kl'])
+    ->values([2, 'Os'])
+    ->values([2, 'To'])
     ->execute();
   $connection->insert('district')
     ->fields(['state_id', 'name'])
-    ->values([1, 'District 1'])
-    ->values([1, 'District 2'])
-    ->values([2, 'District 3'])
-    ->values([2, 'District 4'])
-    ->values([3, 'District 5'])
-    ->values([3, 'District 6'])
-    ->values([4, 'District 7'])
-    ->values([4, 'District 8'])
+    ->values([1, 'Ch'])
+    ->values([1, 'Md'])
+    ->values([2, 'Ksd'])
+    ->values([2, 'Tdm'])
+    ->values([3, 'Abc'])
+    ->values([3, 'Def'])
+    ->values([4, 'Ghi'])
+    ->values([4, 'Jkl'])
     ->execute();
 }

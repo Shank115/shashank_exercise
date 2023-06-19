@@ -2,4 +2,3 @@ name: dependent dropdown
 description: custom dependent dropdown
 type: module
 core_version_requirement: ^9 || ^10
-version: 9.x-1.0
