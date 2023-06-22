@@ -1,5 +1,10 @@
-shank_lib:         #name of library
-  version: 1.x     #compatible version
+shank_lib: #name of library
+  version: 1.x #compatible version
   css:
     theme:
-      css/style.css: {}   #path
+      css/style.css: {} #path
+
+jss_lib:
+  version: 1.x
+  js:
+    js/shank.js: {}

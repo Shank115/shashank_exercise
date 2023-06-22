@@ -1,3 +1,9 @@
 config form permission:
   title: Permission    #permission's title
   description: Permission desc   #description for permission
+
+dynamic permission:
+  title: 'dynamic permission'
+  description: 'dynamic permission '
+permission_callbacks:
+  - \Drupal\shashank_exercise\DynamicPermission::dynamicPermission

@@ -48,7 +48,9 @@ class ControlNew extends ControllerBase {
   public function accessNode(AccountInterface $account, $node) {
     $node = Node::load($node);
     $type = $node->getType();
-    if ($type == 'article' || $type == 'page') {
+
+
+    if ($account->hasPermission("clone $type_id contents")) {
       $result = AccessResult::allowed();
     }
     else {

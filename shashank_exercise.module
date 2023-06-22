@@ -5,19 +5,30 @@
  * This is a short desc.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\shashank_exercise\Event\UserLoginEvent;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 
 /**
  * Implements hook_form_alter().
  */
 function shashank_exercise_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == "node_article_edit_form") {
+    $helptext = \Drupal::configFactory()->getEditable("shashank_exercise.settings")->get("helptext");
+    $node = \Drupal::routeMatch()->getParameter("node"); //type: node object
+    $token_service = \Drupal::token();
+    $hlptxt = $token_service->replace($helptext, ['node'=>$node], ['clear'=>TRUE]);
+    $form['#prefix'] = "<span>" . $hlptxt . "</span>";
+  }
+
   // Gets called whenever form is opened.
   // Calling service to call getName func from CustomService.php.
   $data = \Drupal::service('custom_service')->getName();
   // Prints the value provided in the config form.
   // print_r($data);
+
 }
+
 
 /**
  * Implements hook_theme().
@@ -57,18 +68,62 @@ function shashank_exercise_user_login($account) {
 }
 
 /**
- * Page alter is done.
+ * Page attachement is done.
  */
 function shashank_exercise_page_attachments_alter(array &$attachments) {
   $route_match = \Drupal::routeMatch();
   $route_name = $route_match->getRouteName();
+  $attachments['#attached']['library'][] = 'shashank_exercise/jss_lib';
+  $attachments['#attached']['drupalSettings']['shashank_exercise']['color_body'] = "testing";
 
-  if ($route_name === 'comment.admin') {
-    $attachments['#attached']['library'][] = 'shashank_exercise/css_lib';
 
+
+
+
+  // if ($route_name === 'comment.admin') {
+  //   $attachments['#attached']['library'][] = 'shashank_exercise/css_lib';
+
+  // }
+  // elseif ($route_name == 'entity.node.canonical') {
+  //   $attachments['#attached']['library'][] = 'shashank_exercise/css_lib';
+
+  // }
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function shashank_exercise_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  if ($entity->getEntityTypeId() == "node") {
+      $build['field_tags']['#title'] = "title from view alter";//changing the title
+      unset($build['field_image']);//image field is removed
+      $build['markup'] = [
+          '#markup' => "<h3>Hello</h3>",//static text we are adding
+      ];
   }
-  elseif ($route_name == 'entity.node.canonical') {
-    $attachments['#attached']['library'][] = 'shashank_exercise/css_lib';
 
+}
+
+/**
+* Implements hook_entity_view().
+*/
+function shashank_exercise_entity_view(array &$build, Drupal\Core\Entity\EntityInterface $entity, Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+  // condition entity type = node
+  $session = \Drupal::request()->getSession();
+  $counts = $session->get("shashank_exercise.node_view_count", []);
+  if (!isset($counts[$entity->id()])) {
+      $counts[$entity->id()] = 1;
   }
+  else {
+      $counts[$entity->id()]++;
+  }
+
+  $session->set("shashank_exercise.node_view_count", $counts);
+  $build['count'] = [
+  '#markup' => "Viewed " . $counts[$entity->id()] . " times",
+  '#cache' => [
+      'max-age' => 0,
+  ],
+];
+
 }

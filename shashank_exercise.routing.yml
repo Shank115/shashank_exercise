@@ -15,6 +15,14 @@ shashank_exercise.custom_form:   #machine name
   requirements:
     _permission: 'access content'  #permission of custom form page
 
+shashank_exercise.val_form:   #machine name
+  path: '/val-form-exe'    #path of custom form page
+  defaults:
+    _form: '\Drupal\shashank_exercise\Form\ValForm'            #path is defined
+    _title: 'Val form Details '  #title to be displayed in custom form page
+  requirements:
+    _permission: 'access content'  #permission of custom form page
+
 
 shashank_exercise.config_form:   #machine name
   path: '/config-form-exe'   #path of config form page
@@ -25,6 +33,28 @@ shashank_exercise.config_form:   #machine name
     _permission: 'config form permission'    #permission of config form page
   options:
     _admin_route: TRUE
+
+
+# shashank_exercise.config_form_token:   #machine name
+#   path: '/config-user-exe'   #path of config form page
+#   defaults:
+#     _form: '\Drupal\shashank_exercise\Form\ConfigTokenForm'     #path is defined
+#     _title: 'Help details'   #title to be displayed in config form page
+#   requirements:
+#     _permission: 'config form permission'    #permission of config form page
+#   options:
+#     _admin_route: TRUE
+
+
+
+address_module.form:
+  path: '/address-form'
+  defaults:
+    _form: '\Drupal\shashank_exercise\Form\ShashankForm'
+    _title: 'Address Form'
+  requirements:
+    _permission: 'access content'
+
 
 dependent.form:
   path: '/dropdown'
@@ -39,10 +69,9 @@ shashank_exercise.dropdowndemo: #route name for dropdown
   path: '/dropdown-form' #this the url for dropdown
   defaults:
     _form: '\Drupal\shashank_exercise\Form\DropdownForm' # path where the file is present
-    _title: 'ajax practice demo' #title for dropdown
+    _title: 'practice demo' #title for dropdown
   requirements:
     _permission: 'access content' #accessible for all the users
-
 
 
 shashank_exercise.title:

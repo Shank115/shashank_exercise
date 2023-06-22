@@ -70,7 +70,11 @@ class DependentDropdownForm extends FormBase {
       '#suffix' => '</div>',
       '#empty_option' => $this->t('- Select -'),
     ];
-
+    // Submitting the form.
+    $form['submit'] = [
+      '#type' => 'submit',
+      '#value' => 'Submit',
+    ];
     return $form;
   }
 

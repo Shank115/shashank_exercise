@@ -2,11 +2,13 @@
 
 namespace Drupal\shashank_exercise\EventSubscriber;
 
+use Drupal\shashank_exercise\Event\UserLoginEvent;
+
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\shashank_exercise\Event\UserLoginEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
 
 /**
  * This is for login subscriber.
@@ -37,7 +39,7 @@ class LoginSubscriber implements EventSubscriberInterface {
   protected $dateFormatter;
 
   /**
-   * UserLoginSubscriber constructor.
+   * LoginSubscriber constructor.
    *
    * @param \Drupal\Core\Database\Connection $database
    *   The database connection.

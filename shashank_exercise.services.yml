@@ -7,3 +7,10 @@ services:           #create service
     class: 'Drupal\shashank_exercise\EventSubscriber\CustomConfigEvent'
     tags:
       - { name: 'event_subscriber' }
+    arguments: ['@messenger']
+
+  shashank_exercise_user_login: #creating a loginsubscriber
+    class: '\Drupal\shashank_exercise\EventSubscriber\LoginSubscriber' #location of file
+    tags:
+      - { name: 'event_subscriber' } # uses eventsubscriber
+    arguments: ['@database','@messenger','@date.formatter']
