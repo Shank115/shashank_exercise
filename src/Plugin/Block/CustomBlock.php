@@ -52,12 +52,11 @@ class CustomBlock extends BlockBase implements ContainerFactoryPluginInterface {
    * {@inheritdoc}
    */
   public function build() {
-    $form = \Drupal::formBuilder()->getForm('Drupal\shashank_exercise\Form\CustomForm');
-
-    $rendered_form = \Drupal::service('renderer')->render($form);
-    return [
-      '#markup' => $rendered_form,
-    ];
+    // This service will return customform in the block.
+    $form = $this->formBuilder->getForm('Drupal\shashank_exercise\Form\CustomForm');
+    return $form;
   }
 
 }
+
+

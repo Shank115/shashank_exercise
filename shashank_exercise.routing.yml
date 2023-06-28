@@ -35,15 +35,15 @@ shashank_exercise.config_form:   #machine name
     _admin_route: TRUE
 
 
-# shashank_exercise.config_form_token:   #machine name
-#   path: '/config-user-exe'   #path of config form page
-#   defaults:
-#     _form: '\Drupal\shashank_exercise\Form\ConfigTokenForm'     #path is defined
-#     _title: 'Help details'   #title to be displayed in config form page
-#   requirements:
-#     _permission: 'config form permission'    #permission of config form page
-#   options:
-#     _admin_route: TRUE
+shashank_exercise.config_form_token:   #machine name
+  path: '/token-form'   #path of config form page
+  defaults:
+    _form: '\Drupal\shashank_exercise\Form\TokenForm'     #path is defined
+    _title: 'Help details'   #title to be displayed in config form page
+  requirements:
+    _permission: 'config form permission'    #permission of config form page
+  options:
+    _admin_route: TRUE
 
 
 

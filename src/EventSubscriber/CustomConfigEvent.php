@@ -2,49 +2,63 @@
 
 namespace Drupal\shashank_exercise\EventSubscriber;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Drupal\Core\Config\ConfigEvents;
+use Drupal\Core\Config\ConfigCrudEvent;
+use Drupal\Core\Messenger\MessengerInterface;
 
 /**
- * Redirects user.
+ * Class CustomConfigEventSubscriber.
+ *
+ * Description for the class.
  */
 class CustomConfigEvent implements EventSubscriberInterface {
+  /**
+   * The messenger service.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
 
   /**
-   * Ad.
+   * CustomConfigEventSubscriber constructor.
+   *
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger service.
    */
-  public function checkForRedirection(RequestEvent $event) {
-    // Check for redirection.
-    // Get request and store it in request variable.
-    $request = $event->getRequest();
-    // Path obtained and stored in path variable.
-    $path = $request->getRequestUri();
-    if (strpos($path, 'node/add/page') !== FALSE) {
-      // Redirect old  urls.
-      // When node add page is entered it gets redirected to node 1.
-      $new_url = str_replace('node/add/page', 'node/1', $path);
-      $new_response = new RedirectResponse($new_url, '301');
-      $new_response->send();
-    }
-    // This is necessary because this also gets called on
-    // node sub-tabs such as "edit", "revisions", etc.  This
-    // prevents those pages from redirected.
-    if ($request->attributes->get('_route') !== 'entity.node.canonical') {
-      return;
-    }
-
+  public function __construct(MessengerInterface $messenger) {
+    $this->messenger = $messenger;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
-    // The dynamic cache subscribes an event with priority 27.
-    // If you want that your code runs before, you have to use a priority >27:
-    $events[KernelEvents::REQUEST][] = ['checkForRedirection', 29];
+    $events[ConfigEvents::SAVE][] = ['configSave', -100];
+    $events[ConfigEvents::DELETE][] = ['configDelete', 100];
     return $events;
+  }
+
+  /**
+   * Config save event callback.
+   *
+   * @param \Drupal\Core\Config\ConfigCrudEvent $event
+   *   The config save event.
+   */
+  public function configSave(ConfigCrudEvent $event) {
+    $config = $event->getConfig();
+    $this->messenger->addMessage('Saved config: ' . $config->getName());
+  }
+
+  /**
+   * Config delete event callback.
+   *
+   * @param \Drupal\Core\Config\ConfigCrudEvent $event
+   *   The config delete event.
+   */
+  public function configDelete(ConfigCrudEvent $event) {
+    $config = $event->getConfig();
+    $this->messenger->addMessage('Deleted config: ' . $config->getName());
   }
 
 }

@@ -7,7 +7,11 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\shashank_exercise\Event\UserLoginEvent;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\views\ViewExecutable;
+use Drupal\views\Plugin\views\cache\CachePluginBase;
+
 
 /**
  * Implements hook_form_alter().
@@ -61,21 +65,30 @@ function shashank_exercise_theme($existing, $type, $theme, $path) {
 function shashank_exercise_user_login($account) {
   // Instantiate our event.
   $event = new UserLoginEvent($account);
-
-  // Get the event_dispatcher service and dispatch the event.
+  // Triggering the event_dispatcher service and dispatch the event.
   $event_dispatcher = \Drupal::service('event_dispatcher');
   $event_dispatcher->dispatch($event, UserLoginEvent::EVENT_NAME);
 }
 
 /**
- * Page attachement is done.
+  * Implements hook_entity_presave().
+  */
+
+  function shashank_exercise_entity_presave(EntityInterface $entity) {
+    // print_r($entity->get("title")->getValue());exit;
+    $entity->set("title", "New title ");
+  //exit;
+
+}
+
+/**
+ * Implements hook_page_attachement_alter().
  */
 function shashank_exercise_page_attachments_alter(array &$attachments) {
   $route_match = \Drupal::routeMatch();
   $route_name = $route_match->getRouteName();
   $attachments['#attached']['library'][] = 'shashank_exercise/jss_lib';
   $attachments['#attached']['drupalSettings']['shashank_exercise']['color_body'] = "testing";
-
 
 
 
@@ -127,3 +140,36 @@ function shashank_exercise_entity_view(array &$build, Drupal\Core\Entity\EntityI
 ];
 
 }
+
+
+
+
+/**
+ * Entity view alter function.
+ */
+function shashank_exercise_views_pre_render(ViewExecutable $view) {
+  if ($view->id() == "solr_view" && $view->getDisplay()->display['id'] == "page_1") {
+    $view->element['#attached']['library'][] = "shashank_exercise/shank.js";
+    $view->setTitle("Hello");
+  }
+}
+
+/**
+* Implements hook_views_post_render().
+*/
+function shashank_exercise_views_post_render(ViewExecutable $view, array &$output, CachePluginBase $cache) {
+  if ($view->id() == "solr_view" && $view->getDisplay()->display['id'] == "page_1") {
+    // print_r(array_keys($output['#rows'][0]['#rows'][0]));exit;
+    unset($output['#rows'][0]['#rows'][0]);
+    $cache->options['result_lifespan'] = 0;
+    $cache->options['output_lifespan'] = 0;
+  }
+}
+
+
+
+function shashank_exercise_node_presave($node) {
+  print_r($node->getCacheTags());
+  print_r($node->getCacheContext());
+  exit;
+  }

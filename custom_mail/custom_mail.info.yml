@@ -1,0 +1,4 @@
+name: 'Custom Mail'  #name of the module
+description: 'Mail' #add description of the module
+type: module    #specifies the type like module,etc
+core_version_requirement: ^9 || ^10  #specifies the  minimum required version of the drupal for module

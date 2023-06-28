@@ -5,7 +5,7 @@
  */
 
 function custom_form_schema() {
-    $schema['user_details'] = [
+    $schema['user_det'] = [
         'description' => 'contains user details',
         'fields' => [
             'id' => [

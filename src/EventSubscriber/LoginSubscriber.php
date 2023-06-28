@@ -2,34 +2,26 @@
 
 namespace Drupal\shashank_exercise\EventSubscriber;
 
+// To use the custom Event created.
 use Drupal\shashank_exercise\Event\UserLoginEvent;
-
-use Drupal\Core\Database\Connection;
-use Drupal\Core\Messenger\MessengerInterface;
-use Drupal\Core\Datetime\DateFormatterInterface;
+// Used as base class.
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
+use Drupal\Core\Database\Connection;
+use Drupal\Core\Datetime\DateFormatterInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 
 /**
- * This is for login subscriber.
- *
- * @package Drupal\shashank_exercise\EventSubscriber
+ * Class.
  */
 class LoginSubscriber implements EventSubscriberInterface {
+  // Extending the base class.
 
   /**
-   * The database connection.
+   * The database service.
    *
    * @var \Drupal\Core\Database\Connection
    */
   protected $database;
-
-  /**
-   * The messenger service.
-   *
-   * @var \Drupal\Core\Messenger\MessengerInterface
-   */
-  protected $messenger;
 
   /**
    * The date formatter service.
@@ -39,19 +31,26 @@ class LoginSubscriber implements EventSubscriberInterface {
   protected $dateFormatter;
 
   /**
-   * LoginSubscriber constructor.
+   * The messenger service.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
+   * UserLoginEvent constructor.
    *
    * @param \Drupal\Core\Database\Connection $database
-   *   The database connection.
-   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
-   *   The messenger service.
+   *   The database service.
    * @param \Drupal\Core\Datetime\DateFormatterInterface $dateFormatter
    *   The date formatter service.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger service.
    */
-  public function __construct(Connection $database, MessengerInterface $messenger, DateFormatterInterface $dateFormatter) {
+  public function __construct(Connection $database, DateFormatterInterface $dateFormatter, MessengerInterface $messenger) {
     $this->database = $database;
-    $this->messenger = $messenger;
     $this->dateFormatter = $dateFormatter;
+    $this->messenger = $messenger;
   }
 
   /**
@@ -59,6 +58,7 @@ class LoginSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     return [
+      // Static class constant => method on this class.
       UserLoginEvent::EVENT_NAME => 'onUserLogin',
     ];
   }
@@ -67,17 +67,21 @@ class LoginSubscriber implements EventSubscriberInterface {
    * Subscribe to the user login event dispatched.
    *
    * @param \Drupal\shashank_exercise\Event\UserLoginEvent $event
-   *   Our custom event object.
+   *   Our custom general object.
    */
   public function onUserLogin(UserLoginEvent $event) {
+    // Selecting the table from db.
     $account_created = $this->database->select('users_field_data', 'ud')
+      // Returns when the account was created.
       ->fields('ud', ['created'])
+      // Returns the userid.
       ->condition('ud.uid', $event->account->id())
       ->execute()
       ->fetchField();
 
-    $this->messenger->addStatus(t('Welcome, your account was created on %created_date.', [
-      '%created_date' => $this->dateFormatter->format($account_created, 'short'),
+    // Using message service to get message whenever user logs in.
+    $this->messenger->addStatus(t('Welcome to the site, your account was created on %created_date.', [
+      '%created_date' => $this->dateFormatter->format($account_created, 'long'),
     ]));
   }
 

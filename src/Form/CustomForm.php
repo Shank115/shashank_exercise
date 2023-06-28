@@ -6,26 +6,25 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Database\Connection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Messenger\MessengerInterface;
+
 
 /**
  * For custom form.
  */
 class CustomForm extends FormBase {
 
+
+  protected $messenger;
   /**
-   * The database connection.
+   * The Messenger service.
    *
-   * @var \Drupal\Core\Database\Connection
+   * @var Drupal\Core\Database\Connection
    */
   protected $database;
 
-  /**
-   * CustomForm constructor.
-   *
-   * @param \Drupal\Core\Database\Connection $database
-   *   The database connection.
-   */
-  public function __construct(Connection $database) {
+  public function __construct(MessengerInterface $messenger, Connection $database) {
+    $this->messenger = $messenger;
     $this->database = $database;
   }
 
@@ -34,7 +33,8 @@ class CustomForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('database')
+      $container->get('messenger'),
+      $container->get('database'),
     );
   }
 
@@ -88,11 +88,11 @@ class CustomForm extends FormBase {
   /**
    * Submit form.
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Using messenger service to display the submitted message.
-    \Drupal::messenger()->addMessage("User Details Submitted Successfully");
-    // Using the insert to insert values into the database.
-    \Drupal::database()->insert("user_details")->fields([
+    public function submitForm(array &$form, FormStateInterface $form_state) {
+      // Using a message service to display
+      $this->messenger->addStatus("form submitted");
+      // Using a service of database to store datas submitted.
+      $this->database->insert("custom_form")->fields([
       'firstname' => $form_state->getValue("firstname"),
       'lastname' => $form_state->getValue("lastname"),
       'email' => $form_state->getValue("email"),
@@ -101,3 +101,5 @@ class CustomForm extends FormBase {
   }
 
 }
+
+

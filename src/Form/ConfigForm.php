@@ -37,68 +37,39 @@ class ConfigForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  // public function buildForm(array $form, FormStateInterface $form_state) {
-  //   // Creates form field.
-  //   // Used to load configform object then to modify & retrieve data.
-  //   $config = $this->config(static::CONFIGNAME);
-  //   $form['name'] = [
-  //     '#type' => 'textfield',
-  //     '#title' => '<span>Name</span>',
-  //     '#attached' => [
-  //       'library' => [
-  //         'shashank_exercise/shank_lib',
-  //       ],
-  //     ],
-  //     // Gives the default value.
-  //     '#default_value' => $config->get("name"),
-  //   ];
-
-  //   // Add another field.
-  //   $form['email'] = [
-  //     '#type' => 'textfield',
-  //     '#title' => '<span>email</span>',
-  //     '#attached' => [
-  //   // Using span here and attached library to get color from style.css.
-  //       'library' => [
-  //         'shashank_exercise/shank_lib',
-  //       ],
-  //     ],
-  //     '#default_value' => $config->get("email"),
-  //   ];
-
-  //   // Returns the form.
-  //   return parent::buildForm($form, $form_state);
-  // }
-
-
   public function buildForm(array $form, FormStateInterface $form_state) {
+    // Creates form field.
+    // Used to load configform object then to modify & retrieve data.
     $config = $this->config(static::CONFIGNAME);
-    $form['helptext'] = [
-        '#type' => 'textfield',
-        '#title' => 'Help Text',
-        '#default_value' => $config->get("helptext"),
+    $form['name'] = [
+      '#type' => 'textfield',
+      '#title' => '<span>Name</span>',
+      '#attached' => [
+        'library' => [
+          'shashank_exercise/shank_lib',
+        ],
+      ],
+      // Gives the default value.
+      '#default_value' => $config->get("name"),
     ];
 
-    // Token support.
-    if (\Drupal::moduleHandler()->moduleExists('token')) {
-        $form['tokens'] = [
-            '#title' => $this->t('Tokens'),
-            '#type' => 'container',
-        ];
-        $form['tokens']['help'] = [
-            '#theme' => 'token_tree_link',
-            '#token_types' => [
-            'node',
-            'site',
-            ],
-            // '#token_types' => 'all'
-            '#global_types' => FALSE,
-            '#dialog' => TRUE,
-        ];
-    }
+    // Add another field.
+    $form['email'] = [
+      '#type' => 'textfield',
+      '#title' => '<span>email</span>',
+      '#attached' => [
+    // Using span here and attached library to get color from style.css.
+        'library' => [
+          'shashank_exercise/shank_lib',
+        ],
+      ],
+      '#default_value' => $config->get("email"),
+    ];
 
-    return Parent::buildForm($form, $form_state);
-}
+    // Returns the form.
+    return parent::buildForm($form, $form_state);
+  }
+
 
   /**
    * {@inheritdoc}

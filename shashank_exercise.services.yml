@@ -3,14 +3,14 @@ services:           #create service
     class : Drupal\shashank_exercise\CustomService
     arguments: ['@config.factory']
 
-  custom_events_subscriber:
-    class: 'Drupal\shashank_exercise\EventSubscriber\CustomConfigEvent'
+  events_subscriber: #creating a eventsubscriber
+    class: '\Drupal\shashank_exercise\EventSubscriber\CustomConfigEvent' #path
     tags:
-      - { name: 'event_subscriber' }
+      - { name: 'event_subscriber' } # to use event subscriber
     arguments: ['@messenger']
 
-  shashank_exercise_user_login: #creating a loginsubscriber
-    class: '\Drupal\shashank_exercise\EventSubscriber\LoginSubscriber' #location of file
+  shashank_exercise_user_login: #creating eventsub
+    class: '\Drupal\shashank_exercise\EventSubscriber\LoginSubscriber' #path of file
     tags:
-      - { name: 'event_subscriber' } # uses eventsubscriber
-    arguments: ['@database','@messenger','@date.formatter']
+      - { name: 'event_subscriber' } # to use event subscriber
+    arguments: ['@database','@date.formatter','@messenger']

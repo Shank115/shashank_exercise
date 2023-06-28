@@ -29,20 +29,20 @@ class ShashankForm extends FormBase {
       '#attributes' => ['id' => 'permanent-address'],
     ];
 
-    $form['same_as_permanent'] = [
+    $form['same_address'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Same as Permanent'),
-      '#attributes' => ['id' => 'same-as-permanent'],
+      '#title' => $this->t('Same address'),
+      '#attributes' => ['id' => 'same-address'],
     ];
 
-    $form['temporary_address'] = [
+    $form['other_address'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Temporary Address'),
-      '#attributes' => ['id' => 'temporary-address'],
+      '#title' => $this->t('Other Address'),
+      '#attributes' => ['id' => 'other-address'],
     ];
     $form['submit'] = [
       '#type' => 'submit',
-      '#value' => 'Save the configuration',
+      '#value' => 'Save address',
     ];
 
     return $form;
